@@ -5,3 +5,5 @@ __pycache__/
 build/
 dist/
 demo/build/
+demo.mp4
+launch/
