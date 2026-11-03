@@ -1,0 +1,23 @@
+name: bumprisk
+description: Flag risky dependency changes in a pull request (removed/malicious versions, fresh releases, new install scripts, lost provenance, new vulns)
+author: Mohammad Hamarsheh
+branding:
+  icon: shield
+  color: red
+inputs:
+  args:
+    description: Arguments for bumprisk (default compares the PR's lockfiles against the base branch)
+    default: diff
+  fail-on:
+    description: critical | high | medium | low | never
+    default: high
+  cooldown:
+    description: Flag versions younger than this many days
+    default: "7"
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: python3 -m pip install --quiet --disable-pip-version-check "${{ github.action_path }}" || python3 -m pip install --quiet --break-system-packages "${{ github.action_path }}"
+    - shell: bash
+      run: python3 -m bumprisk ${{ inputs.args }} --fail-on "${{ inputs.fail-on }}" --cooldown "${{ inputs.cooldown }}"

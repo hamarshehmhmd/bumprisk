@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bumprisk"
+version = "0.1.0"
+description = "See what a lockfile change really pulls in before you merge it: removed/malicious versions, brand-new releases, new install scripts, lost provenance, publisher changes and new vulnerabilities."
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{name = "Mohammad Hamarsheh"}]
+requires-python = ">=3.9"
+dependencies = ["tomli>=1.1; python_version < '3.11'"]
+keywords = ["supply-chain", "security", "npm", "pypi", "lockfile", "dependabot", "renovate", "dependencies", "ci"]
+classifiers = [
+  "Environment :: Console",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+  "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.urls]
+Homepage = "https://github.com/hamarshehmhmd/bumprisk"
+Issues = "https://github.com/hamarshehmhmd/bumprisk/issues"
+
+[project.scripts]
+bumprisk = "bumprisk.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
