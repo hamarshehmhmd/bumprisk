@@ -103,14 +103,20 @@ on: pull_request
 jobs:
   bumprisk:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
-      - uses: hamarshehmhmd/bumprisk@v0.1.0
+      - uses: hamarshehmhmd/bumprisk@v0.1.1
         with:
           fail-on: high      # default
           cooldown: "7"
 ```
+
+`args` (default `diff`) is split into command-line words and passed through as argv. Quotes and backslashes group words, so a path that contains spaces is one argument. `;`, `|`, `$()`, backticks, and globs stay literal text. `fail-on` and `cooldown` are each a single argument and override the same flags if they also appear in `args`. The runner needs `python3` on `PATH` (GitHub-hosted Ubuntu and macOS images provide it).
+
+Pin `v0.1.1` or later. The `v0.1.0` action pastes `args`, `fail-on`, and `cooldown` into the shell.
 
 The report is also written to the job summary (`$GITHUB_STEP_SUMMARY`) as a markdown table.
 

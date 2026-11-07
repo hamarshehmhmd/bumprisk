@@ -44,6 +44,19 @@ jobs:
         with:
           args: compare examples/npm/old/package-lock.json examples/npm/new/package-lock.json
           fail-on: never
+      - name: untrusted inputs must not run in the shell
+        continue-on-error: true
+        uses: ./
+        with:
+          args: 'diff --base $(touch $RUNNER_TEMP/bumprisk-pwned)'
+          fail-on: '$(touch $RUNNER_TEMP/bumprisk-pwned)'
+          cooldown: '$(touch $RUNNER_TEMP/bumprisk-pwned)'
+      - name: shell payload did not run
+        run: |
+          if [ -e "$RUNNER_TEMP/bumprisk-pwned" ]; then
+            echo "action input was executed by the shell" >&2
+            exit 1
+          fi
 
   install-script:
     runs-on: ubuntu-latest

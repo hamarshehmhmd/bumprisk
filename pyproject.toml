@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bumprisk"
-version = "0.1.0"
+version = "0.1.1"
 description = "See what a lockfile change really pulls in before you merge it: removed/malicious versions, brand-new releases, new install scripts, lost provenance, publisher changes and new vulnerabilities."
 readme = "README.md"
 license = "AGPL-3.0-or-later"

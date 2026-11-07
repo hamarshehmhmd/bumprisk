@@ -1,12 +1,12 @@
 name: bumprisk
-description: Flag risky dependency changes in a pull request (removed/malicious versions, fresh releases, new install scripts, lost provenance, new vulns)
+description: "Flag risky dependency changes: removed/malicious versions, fresh releases, install scripts, lost provenance, new vulns."
 author: Mohammad Hamarsheh
 branding:
   icon: shield
   color: red
 inputs:
   args:
-    description: Arguments for bumprisk (default compares the PR's lockfiles against the base branch)
+    description: Command-line words for bumprisk. Quotes and backslashes group words; shell syntax is literal. Default compares the PR's lockfiles against the base branch.
     default: diff
   fail-on:
     description: critical | high | medium | low | never
@@ -17,7 +17,17 @@ inputs:
 runs:
   using: composite
   steps:
+    # Pass inputs only through the environment. Never paste action inputs into
+    # a run script: the runner substitutes them before bash parses the script,
+    # and double quotes do not stop command substitution. The entrypoint
+    # splits BUMPRISK_ARGS with shlex and does not evaluate shell syntax.
     - shell: bash
-      run: python3 -m pip install --quiet --disable-pip-version-check "${{ github.action_path }}" || python3 -m pip install --quiet --break-system-packages "${{ github.action_path }}"
+      env:
+        BUMPRISK_ACTION_PATH: ${{ github.action_path }}
+      run: python3 -m pip install --quiet --disable-pip-version-check "$BUMPRISK_ACTION_PATH" || python3 -m pip install --quiet --break-system-packages "$BUMPRISK_ACTION_PATH"
     - shell: bash
-      run: python3 -m bumprisk ${{ inputs.args }} --fail-on "${{ inputs.fail-on }}" --cooldown "${{ inputs.cooldown }}"
+      env:
+        BUMPRISK_ARGS: ${{ inputs.args }}
+        BUMPRISK_FAIL_ON: ${{ inputs['fail-on'] }}
+        BUMPRISK_COOLDOWN: ${{ inputs.cooldown }}
+      run: python3 -m bumprisk.action
