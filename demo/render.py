@@ -46,7 +46,7 @@ SCENES = [
             "and debug got poisoned patch releases that were live for about two hours. PyPI had the same with "
             "ultralytics and num2words."},
     {"kind": "term", "cwd": "root",
-     "cmds": ["bumprisk compare examples/npm/old/package-lock.json examples/npm/new/package-lock.json; echo \"exit $?\""],
+     "cmds": ["bumprisk compare examples/npm/old/package-lock.fixture.json examples/npm/new/package-lock.fixture.json --as package-lock.json; echo \"exit $?\""],
      "say": "Here are two real lockfiles from those incidents. bumprisk compare shows plain crypto j s was replaced "
             "by an npm security placeholder, O S V lists the axios, chalk and debug versions as malware, and they "
             "were removed from the registry. vite is a normal bump and is summarised as fine. Exit code one fails "

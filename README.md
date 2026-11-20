@@ -65,7 +65,7 @@ Exit codes: `0` nothing at or above `--fail-on`, `1` findings at or above it, `2
 Real output for the axios / chalk incidents (the example lockfiles are in [`examples/`](examples)):
 
 ```text
-$ bumprisk compare examples/npm/old/package-lock.json examples/npm/new/package-lock.json
+$ bumprisk compare examples/npm/old/package-lock.fixture.json examples/npm/new/package-lock.fixture.json --as package-lock.json
 ✖ CRITICAL axios 1.14.0 -> 1.14.1  [npm]
     ✖ OSV lists this version as malicious: MAL-2026-2307
     ✖ axios@1.14.1 was published 2026-03-31 and later removed from the registry; npm pulls compromised releases this way, and installs from this lockfile will fail

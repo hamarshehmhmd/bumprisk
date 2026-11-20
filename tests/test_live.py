@@ -11,9 +11,9 @@ EX = os.path.join(os.path.dirname(__file__), "..", "examples")
 
 
 def run(capsys, kind):
-    rc = cli.main(["compare", f"{EX}/{kind}/old/{'package-lock.json' if kind == 'npm' else 'requirements.txt'}",
-                   f"{EX}/{kind}/new/{'package-lock.json' if kind == 'npm' else 'requirements.txt'}",
-                   "--format", "json"])
+    rc = cli.main(["compare", f"{EX}/{kind}/old/{'package-lock.fixture.json' if kind == 'npm' else 'requirements.txt'}",
+                   f"{EX}/{kind}/new/{'package-lock.fixture.json' if kind == 'npm' else 'requirements.txt'}",
+                   *(["--as", "package-lock.json"] if kind == "npm" else []), "--format", "json"])
     return rc, {c["name"]: c for c in json.loads(capsys.readouterr().out)["changes"]}
 
 

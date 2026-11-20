@@ -43,7 +43,7 @@ def offline(monkeypatch):
 
 
 def test_compare_example_fails_with_findings(capsys):
-    rc = cli.main(["compare", f"{EX}/npm/old/package-lock.json", f"{EX}/npm/new/package-lock.json"])
+    rc = cli.main(["compare", f"{EX}/npm/old/package-lock.fixture.json", f"{EX}/npm/new/package-lock.fixture.json", "--as", "package-lock.json"])
     out = capsys.readouterr().out
     assert rc == 1
     assert "CRITICAL plain-crypto-js 4.2.1 (new)" in out
@@ -54,7 +54,7 @@ def test_compare_example_fails_with_findings(capsys):
 
 
 def test_fail_on_never_and_json(capsys):
-    rc = cli.main(["compare", f"{EX}/npm/old/package-lock.json", f"{EX}/npm/new/package-lock.json",
+    rc = cli.main(["compare", f"{EX}/npm/old/package-lock.fixture.json", f"{EX}/npm/new/package-lock.fixture.json", "--as", "package-lock.json",
                    "--fail-on", "never", "--format", "json"])
     data = json.loads(capsys.readouterr().out)
     assert rc == 0
@@ -77,7 +77,7 @@ def test_markdown_output_file_and_step_summary(tmp_path, monkeypatch):
     summary = tmp_path / "summary.md"
     monkeypatch.setenv("GITHUB_STEP_SUMMARY", str(summary))
     out = tmp_path / "report.txt"
-    cli.main(["compare", f"{EX}/npm/old/package-lock.json", f"{EX}/npm/new/package-lock.json", "-o", str(out)])
+    cli.main(["compare", f"{EX}/npm/old/package-lock.fixture.json", f"{EX}/npm/new/package-lock.fixture.json", "--as", "package-lock.json", "-o", str(out)])
     assert "CRITICAL" in out.read_text()
     md = summary.read_text()
     assert md.startswith("### bumprisk: 5 changed packages")
